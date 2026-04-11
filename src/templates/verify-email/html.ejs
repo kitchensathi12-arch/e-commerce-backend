@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 40px 20px;
+            text-align: center;
+            color: #ffffff;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .icon-container {
+            margin: 20px 0;
+            font-size: 60px;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .greeting {
+            font-size: 18px;
+            color: #333333;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 16px;
+            color: #666666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        .verification-container {
+            background-color: #f8f9fa;
+            border: 2px solid #667eea;
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .verification-button {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            margin: 20px 0;
+            transition: transform 0.2s;
+        }
+        
+        .verification-button:hover {
+            transform: scale(1.05);
+        }
+        
+        .link-container {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px dashed #e0e0e0;
+        }
+        
+        .link-text {
+            font-size: 12px;
+            color: #999999;
+            margin-bottom: 10px;
+        }
+        
+        .verification-link {
+            word-break: break-all;
+            font-size: 12px;
+            color: #667eea;
+            text-decoration: none;
+            display: inline-block;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            max-width: 100%;
+        }
+        
+        .expiry-text {
+            font-size: 14px;
+            color: #999999;
+            margin-top: 20px;
+        }
+        
+        .warning {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #856404;
+        }
+        
+        .info-box {
+            background-color: #e7f3ff;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 20px 0;
+            font-size: 14px;
+            color: #0d47a1;
+        }
+        
+        .footer {
+            background-color: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e0e0e0;
+        }
+        
+        .footer p {
+            font-size: 14px;
+            color: #666666;
+            margin-bottom: 10px;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin: 0 10px;
+            color: #667eea;
+            text-decoration: none;
+        }
+        
+        @media only screen and (max-width: 600px) {
+            .content {
+                padding: 30px 20px;
+            }
+            
+            .verification-button {
+                padding: 12px 30px;
+                font-size: 14px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="header">
+            <div class="icon-container">✉️</div>
+            <h1><%= companyName %></h1>
+            <p>Verify Your Email Address</p>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <p class="greeting">Hello <%= userName %>,</p>
+            
+            <p class="message">
+                Welcome to <%= companyName %>! We're excited to have you on board. To get started, please verify your email address by clicking the button below.
+            </p>
+            
+            <!-- Verification Box -->
+            <div class="verification-container">
+                <p style="font-size: 14px; color: #666666; margin-bottom: 15px;">
+                    Click the button below to verify your email:
+                </p>
+                
+                <a href="<%= verificationLink %>" class="verification-button">
+                    Verify Email Address
+                </a>
+                
+                <p class="expiry-text">
+                    ⏱ This link will expire in <%= expiryHours %> hours
+                </p>
+                
+                <!-- Alternative Link -->
+                <div class="link-container">
+                    <p class="link-text">
+                        If the button doesn't work, copy and paste this link into your browser:
+                    </p>
+                    <a href="<%= verificationLink %>" class="verification-link">
+                        <%= verificationLink %>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="info-box">
+                <strong>ℹ️ What happens next?</strong><br>
+                Once verified, you'll have full access to all features and can start using your account immediately.
+            </div>
+            
+            <!-- Warning -->
+            <div class="warning">
+                <strong>⚠️ Security Notice:</strong> If you didn't create an account with <%= companyName %>, please ignore this email or contact our support team.
+            </div>
+            
+            <p class="message">
+                If you have any questions or need assistance, feel free to reach out to our support team.
+            </p>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>Thank you for choosing <%= companyName %>!</p>
+            <p>&copy; <%= new Date().getFullYear() %> <%= companyName %>. All rights reserved.</p>
+            
+            <div class="social-links">
+                <a href="<%= websiteUrl %>">Website</a> |
+                <a href="mailto:<%= supportEmail %>">Support</a> |
+                <a href="<%= privacyUrl %>">Privacy Policy</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
