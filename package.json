@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./build/src/index.js ",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts | pino-pretty -c",
-    "build": "tsc --project tsconfig.json && tsc-alias && ts-node -r tsconfig-paths/register tools/copyAssets.ts",
+    "build": "tsc --project tsconfig.json && tsc-alias && ts-node -r tsconfig-paths/register src/tools/copyAssets.ts",
     "lint:check": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
     "prettier:check": "prettier --check 'src/**/*.ts'",
