@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pm2 start ./build/src/index.js --name kitchensathi-backend",
+    "start": "npm run build && pm2 start ./build/src/index.js --name kitchensathi-backend",
+    "stop": "pm2 stop kitchensathi-backend",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts | pino-pretty -c",
     "build": "tsc --project tsconfig.json && tsc-alias && ts-node -r tsconfig-paths/register src/tools/copyAssets.ts",
     "lint:check": "eslint 'src/**/*.ts'",
