@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 
 export const authMiddleware = async (req: Request, _res: Response, next: NextFunction):Promise<void> => {
-    const accessToken = req.cookies?.jwt || req.headers.authorization?.split(" ")[1];
+    const accessToken = req.session?.jwt || req.headers.authorization?.split(" ")[1];
     
     if (!accessToken) {
         throw new NotAuthorizedError("Access token is missing", "authMiddleware() method error");
