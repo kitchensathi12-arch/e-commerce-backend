@@ -4,14 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./build/src/index.js ",
+    "start": "pm2 start ./build/src/index.js --name kitchensathi-backend",
     "dev": "nodemon -r tsconfig-paths/register src/index.ts | pino-pretty -c",
     "build": "tsc --project tsconfig.json && tsc-alias && ts-node -r tsconfig-paths/register src/tools/copyAssets.ts",
     "lint:check": "eslint 'src/**/*.ts'",
     "lint:fix": "eslint 'src/**/*.ts' --fix",
     "prettier:check": "prettier --check 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
-    "update": "npm uni @kitchensathi12-arch/ecommerce-types && npm i @kitchensathi12-arch/ecommerce-types"
+    "update": "npm uni @kitchensathi12-arch/ecommerce-types && npm i @kitchensathi12-arch/ecommerce-types",
+    "stag":"pm2 start ./build/src/index.js --name stg-kitchensathi-backend"
   },
   "keywords": [],
   "author": "",

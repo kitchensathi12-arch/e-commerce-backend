@@ -96,14 +96,14 @@ export const loginUser = AsyncHandler(async (req: Request, res: Response): Promi
 
   const token = sign({ id: getUser._id, email: getUser.email, username: getUser.username }, config.JWT_SECRET!);
 
-  // res.cookie('AT_JWT', token, {
-  //   httpOnly: true,
-  //   secure: config.NODE_ENV !== 'development',
-  //   sameSite: 'none',
-  //   maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
-  // });
+  res.cookie('AT_SEC', token, {
+    httpOnly: true,
+    secure: config.NODE_ENV !== 'development',
+    sameSite: 'none',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
 
-  req.session = { jwt: token }
+  // req.session = { jwt: token }
 
   res.status(StatusCodes.OK).json({ user: getUser, token, success: true });
 });
