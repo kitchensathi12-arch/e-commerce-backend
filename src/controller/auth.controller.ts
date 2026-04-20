@@ -10,7 +10,7 @@ import { BadRequestError, IAuthDocument, lowerCase, NotFoundError } from '@kitch
 // ~ ------------------- local imports start here ---------------------------------
 import { config } from '@/config';
 import { emailTemplate } from '@/helper/email.transport';
-import { createUser, findUserByEmail, findUserByEmailOrUsername, findUserByEmailVerificationToken, findUserById, updateUserById } from '@/services/user.service';
+import { createUser, findUserByEmail, findUserByEmailOrUsername, findUserByEmailVerificationToken, findUserById, findUserByIdWithPassword, updateUserById } from '@/services/user.service';
 import { AsyncHandler } from '@/utils/AsyncHandler';
 import { generateOTP } from '@/utils/otpGenerator';
 
@@ -104,6 +104,10 @@ export const loginUser = AsyncHandler(async (req: Request, res: Response): Promi
   // });
 
   req.session = { jwt: token }
+  getUser.password = undefined;
+  getUser.profile_public_id = undefined;
+  getUser.verified = undefined;
+  getUser.email_verification_token = undefined;
 
   res.status(StatusCodes.OK).json({ user: getUser, token, success: true });
 });
@@ -130,7 +134,7 @@ export const verifyEmail = AsyncHandler(async (req: Request, res: Response): Pro
     throw new BadRequestError('Verification token is either invalid or is already used.', 'VerifyEmail() method error');
   };
 
-  await updateUserById(checkIfUserExist._id, { verified: true } as IAuthDocument);
+  await updateUserById(checkIfUserExist._id, { verified: true, email_verification_token: "" } as IAuthDocument);
 
   const updatedUser = await findUserById(checkIfUserExist._id)
   res.status(StatusCodes.OK).json({
@@ -200,7 +204,33 @@ export const loginWithGoogle = AsyncHandler(async (req: Request, res: Response) 
   const payload = ticket.getPayload();
   const all = ticket.getAttributes();
 
-  res.status(StatusCodes.OK).json({payload,all})
+  res.status(StatusCodes.OK).json({ payload, all })
+});
+
+// **************************************
+// ~ change password method start here
+// **************************************
+export const changePassword = AsyncHandler(async (req: Request, res: Response) => {
+  const { currentPassword, newPassword } = req.body;
+  const userId = req.currentUser!.id as unknown as Types.ObjectId;
+  const user = await findUserByIdWithPassword(userId);
+  console.log(user)
+  if (!user) {
+    throw new NotFoundError('User not found', 'changePassword() method error');
+  }
+  const isPasswordValid = await bcrypt.compare(currentPassword, user.password!);
+  if (!isPasswordValid) {
+    throw new BadRequestError('Current password is incorrect', 'changePassword() method error');
+  }
+  user.password = newPassword;
+  await user.save();
+  const token = sign({ id: user._id, email: user.email, username: user.username }, config.JWT_SECRET!);
+  req.session = { jwt: token }
+  user.password = undefined;
+  user.profile_public_id = undefined;
+  user.verified = undefined;
+  user.email_verification_token = undefined;
+  res.status(StatusCodes.OK).json({ user, token, success: true });
 });
 
 
