@@ -19,6 +19,11 @@ export const findUserById = async (id:Types.ObjectId): Promise<IAuthDocument | n
     return result;
 };
 
+export const findUserByIdWithPassword = async (id:Types.ObjectId): Promise<IAuthDocument | null> => {
+    const result:IAuthDocument | null = await UserModel.findById(id);
+    return result;
+}
+
 export const findUserByEmailOrUsername = async (email:string, username:string): Promise<IAuthDocument | null> => {
     const result:IAuthDocument | null = await UserModel.findOne({$or: [{email}, {username}]});
     return result;

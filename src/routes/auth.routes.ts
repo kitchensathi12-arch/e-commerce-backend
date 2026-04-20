@@ -2,7 +2,7 @@ import { authLoginValidationSchema, authRegisterValidationSchema } from '@kitche
 import express, { Router } from 'express';
 
 // ~  --------------------- local imports start here ---------------------------
-import { getLoggedInUser, loginUser, registerUser, verifyEmail, resendOtp, logout, loginWithGoogle } from '@/controller/auth.controller';
+import { getLoggedInUser, loginUser, registerUser, verifyEmail, resendOtp, logout, loginWithGoogle, changePassword } from '@/controller/auth.controller';
 import { authMiddleware } from '@/middleware/Authorization';
 import { Validator } from '@/utils/validator';
 
@@ -21,6 +21,7 @@ export const AuthRouter = (): Router => {
   // ~ private and protected routes start here.
   // **************************************
   router.get('/logged-in-user', authMiddleware, getLoggedInUser);
+  router.post('/change-password', authMiddleware,changePassword)
   router.post('/logout', authMiddleware, logout)
   router.post('/verify-email', authMiddleware, verifyEmail);
 
