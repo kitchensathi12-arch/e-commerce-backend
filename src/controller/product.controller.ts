@@ -71,9 +71,11 @@ export const getProductList = AsyncHandler(async (req: Request, res: Response) =
 // **************************************
 export const getProductListForWeb = AsyncHandler(async (req: Request, res: Response) => {
     const limit = parseInt(req.query.limit as string) || 12;
-    const page = parseInt(req.query.limit as string) || 1;
+    const page = parseInt(req.query.page as string) || 1;
     const skip = (page - 1) * limit;
-    const filter = req.body?.filter || {};
+    const filter = req.body || {};
+
+
     const data = await getAllProductForWeb(limit, skip, filter);
     res.status(StatusCodes.OK).json(data);
 });
