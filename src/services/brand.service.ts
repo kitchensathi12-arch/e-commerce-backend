@@ -9,7 +9,7 @@ export const createBrandService = async (data: IBrandPayload): Promise<IBrandDoc
 };
 
 export const paginateWithFilterBrand = async (limit: number, skip: number, filter: any): Promise<{ data: IBrandDocument[] | [], totalData: number, totalPage: number }> => {
-    console.log(filter)
+
     const result = await BrandModel.aggregate([
         {
             $match: { ...filter, deleted_at: null },

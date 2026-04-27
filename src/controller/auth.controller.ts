@@ -214,7 +214,6 @@ export const changePassword = AsyncHandler(async (req: Request, res: Response) =
   const { currentPassword, newPassword } = req.body;
   const userId = req.currentUser!.id as unknown as Types.ObjectId;
   const user = await findUserByIdWithPassword(userId);
-  console.log(user)
   if (!user) {
     throw new NotFoundError('User not found', 'changePassword() method error');
   }

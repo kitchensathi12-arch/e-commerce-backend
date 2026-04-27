@@ -219,7 +219,7 @@ export const getAllProductForWeb = async (
         }
 
     ]);
-
+    
     const totalProduct = result[0]?.totalProduct[0]?.count || 0;
 
     return {
