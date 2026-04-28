@@ -13,14 +13,14 @@
     "prettier:check": "prettier --check 'src/**/*.ts'",
     "prettier:fix": "prettier --write 'src/**/*.ts'",
     "update": "npm uni @kitchensathi12-arch/ecommerce-types && npm i @kitchensathi12-arch/ecommerce-types",
-    "stag":"pm2 start ./build/src/index.js --name stg-kitchensathi-backend"
+    "stag": "pm2 start ./build/src/index.js --name stg-kitchensathi-backend"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "@kitchensathi12-arch/ecommerce-types": "^0.1.0",
+    "@kitchensathi12-arch/ecommerce-types": "^0.1.1",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.9.0",
     "compression": "^1.8.1",
