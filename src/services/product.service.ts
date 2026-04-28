@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 // local imports 
 import { ProductModel } from "@/models/product.model";
-import { IProductDocument } from "@kitchensathi12-arch/ecommerce-types";
-import { IProductList } from "@kitchensathi12-arch/ecommerce-types/src/interface/product.interface";
+import { IProductDocument,IProductList } from "@kitchensathi12-arch/ecommerce-types";
 
 
 
