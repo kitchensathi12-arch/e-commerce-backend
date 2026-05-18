@@ -15,6 +15,7 @@ class Config {
   public SECRET_KEY_TWO: string;
   public GOOGLE_API_KEY: string;
   public GOOGLE_API_SECRET: string;
+  public STG_CLIENT_URL:string;
   constructor() {
     this.NODE_ENV = process.env.NODE_ENV || '';
     this.JWT_SECRET = process.env.JWT_SECRET || '';
@@ -27,6 +28,7 @@ class Config {
     this.SECRET_KEY_ONE = process.env.SECRET_KEY_ONE || '';
     this.GOOGLE_API_KEY = process.env.GOOGLE_API_KEY || '';
     this.GOOGLE_API_SECRET = process.env.GOOGLE_API_SECRET || '';
+    this.STG_CLIENT_URL = process.env.STG_CLIENT_URL || '';
 
   }
 

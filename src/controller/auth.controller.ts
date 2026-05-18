@@ -109,7 +109,7 @@ export const loginUser = AsyncHandler(async (req: Request, res: Response): Promi
   getUser.verified = undefined;
   getUser.email_verification_token = undefined;
 
-  res.status(StatusCodes.OK).json({ user: getUser, token, success: true });
+  res.status(StatusCodes.OK).json({ user: getUser, token, success: true, message: "User login successfully" });
 });
 
 

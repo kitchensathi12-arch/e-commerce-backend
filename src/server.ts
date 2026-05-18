@@ -9,8 +9,9 @@ import { RootRouter } from './routes';
 import { StatusCodes } from 'http-status-codes';
 import { CustomError } from '@kitchensathi12-arch/ecommerce-types';
 import cookieSession from "cookie-session";
+import { corsOptions } from './utils/corsHandler';
 
-const SERVER_PORT = 4000;
+const SERVER_PORT = config.NODE_ENV === "stg" ? 4001 : 4000 ;
 
 const logger = winstonLogger('Server file', 'debug');
 
@@ -25,11 +26,7 @@ function slanderedMiddleware(app: Application): void {
     app.set('trust proxy', 1); 
     app.use(express.json({ limit: '100mb' }));
     app.use(express.urlencoded({ extended: true, limit: '100mb' }));
-    app.use(cors({
-        origin: config.NODE_ENV === "development" ? config.LOCAL_CLIENT_URL : config.CLIENT_URL,
-        credentials: true,
-        methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    }));
+    app.use(cors(corsOptions));
     app.use(cookieSession({
         name: "session",
         keys: [`${config.SECRET_KEY_ONE}`, `${config.SECRET_KEY_TWO}`],
@@ -64,7 +61,8 @@ function errorHandler(app: Application): void {
             logger.error(err.message, err);
             res.status(err.statusCodes).json(err.serializeError());
         } else {
-            res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+            console.log(err);
+            res.status((err as any).statusCodes || StatusCodes.INTERNAL_SERVER_ERROR).json({
                 message: err.message || "Something went wrong",
                 stack: err.stack,
                 err:err
