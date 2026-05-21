@@ -7,9 +7,10 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import { RootRouter } from './routes';
 import { StatusCodes } from 'http-status-codes';
-import { CustomError } from '@kitchensathi12-arch/ecommerce-types';
+import { CustomError, IErrorResponse } from '@kitchensathi12-arch/ecommerce-types';
 import cookieSession from "cookie-session";
 import { corsOptions } from './utils/corsHandler';
+import morgan from "morgan"
 
 const SERVER_PORT = config.NODE_ENV === "stg" ? 4001 : 4000 ;
 
@@ -26,6 +27,7 @@ function slanderedMiddleware(app: Application): void {
     app.set('trust proxy', 1); 
     app.use(express.json({ limit: '100mb' }));
     app.use(express.urlencoded({ extended: true, limit: '100mb' }));
+    app.use(morgan("combined"));
     app.use(cors(corsOptions));
     app.use(cookieSession({
         name: "session",
@@ -56,15 +58,14 @@ function errorHandler(app: Application): void {
         }
     });
 
-    app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
-        if (err instanceof CustomError) {
-            logger.error(err.message, err);
-            res.status(err.statusCodes).json(err.serializeError());
-        } else {
-            console.log(err);
+    app.use((err: IErrorResponse, _req: Request, res: Response, _next: NextFunction) => {
+        if (err instanceof CustomError ) {
+                logger.log('error', `GatewayService ${err.comingFrom}:`,err);
+                res.status(err.statusCodes).json(err.serializeError());
+            } else {
+            logger.error(err);
             res.status((err as any).statusCodes || StatusCodes.INTERNAL_SERVER_ERROR).json({
                 message: err.message || "Something went wrong",
-                stack: err.stack,
                 err:err
 
             });

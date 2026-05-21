@@ -15,8 +15,6 @@ const corsHandler = () => {
 };
 
 
-console.log(corsHandler());
-
 
 export const corsOptions:CorsOptions = {
     origin: function (origin: any, callback: any) {

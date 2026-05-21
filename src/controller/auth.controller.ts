@@ -45,7 +45,6 @@ export const registerUser = AsyncHandler(async (req: Request, res: Response): Pr
   const result: IAuthDocument = await createUser(userData);
 
 
-  const token = sign({ id: result._id, email: result.email, username: result.username }, config.JWT_SECRET!);
 
   const clientUrl = config.NODE_ENV === "development" ? config.LOCAL_CLIENT_URL : config.CLIENT_URL;
 
@@ -68,9 +67,9 @@ export const registerUser = AsyncHandler(async (req: Request, res: Response): Pr
   //   maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   // });
 
-  req.session = { jwt: token }
+  // req.session = { jwt: token }
 
-  res.status(StatusCodes.CREATED).json({ result, token, success: true });
+  res.status(StatusCodes.CREATED).json({ result, success: true });
 
 
 
@@ -87,6 +86,10 @@ export const loginUser = AsyncHandler(async (req: Request, res: Response): Promi
 
   if (!getUser) {
     throw new BadRequestError('Invalid credentials', 'LoginUser() method error');
+  }
+
+  if(!getUser.verified){
+    throw new BadRequestError("User Not verified. Please verify your account","LoginUser() method error")
   }
 
   const isPasswordValid = await bcrypt.compare(password, getUser.password!);
@@ -136,10 +139,16 @@ export const verifyEmail = AsyncHandler(async (req: Request, res: Response): Pro
 
   await updateUserById(checkIfUserExist._id, { verified: true, email_verification_token: "" } as IAuthDocument);
 
-  const updatedUser = await findUserById(checkIfUserExist._id)
+  const jwt = sign({ id: checkIfUserExist._id, email: checkIfUserExist.email, username: checkIfUserExist.username }, config.JWT_SECRET!);
+
+
+  await findUserById(checkIfUserExist._id);
+
+req.session = { jwt }
   res.status(StatusCodes.OK).json({
     message: "Email verified successfully.",
-    user: updatedUser
+    token:jwt
+
   })
 
 });
